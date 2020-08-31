@@ -61,7 +61,7 @@ exports.getSpecificTour = catchAsync(async (req, res, next) => {
         });
 });
 
-exports.updateTour = (async (req, res, next) => {
+exports.updateTour = catchAsync(async (req, res, next) => {
     const id = req.params.id;
 
     const tour = await Tour.findByIdAndUpdate(id, req.body, {
@@ -81,7 +81,7 @@ exports.updateTour = (async (req, res, next) => {
         });
 });
 
-exports.deleteTour = (async (req, res, next) => {
+exports.deleteTour = catchAsync(async (req, res, next) => {
     const id = req.params.id;
 
     const tour = await Tour.findByIdAndDelete(id);
@@ -96,7 +96,7 @@ exports.deleteTour = (async (req, res, next) => {
         });
 });
 
-exports.getTourStats = (async (req, res, next) => {
+exports.getTourStats = catchAsync(async (req, res, next) => {
     const stats = await Tour.aggregate([
         {
             $match: { ratingsAverage: {$gte: 4.5} }
