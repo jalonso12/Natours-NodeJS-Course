@@ -17,5 +17,12 @@ const APP = require('./app');
 // SERVER STARTER
 const port = process.env.PORT || 8000;
 APP.listen(port, 'localhost', () => {
-    console.log(`App running on ${process.env.NODE_ENV} (Port: ${port})...`);
+    console.log(`<--- App running on ${process.env.NODE_ENV} (Port: ${port}) --->`);
+});
+
+process.on('unhandledRejection', err => {
+    console.log(err.name, err.message);
+
+    console.log('Shutting down program...')
+    process.exit(1);
 });
