@@ -1,4 +1,5 @@
 const express = require('express');
+const authController = require('./../controllers/authController');
 
 // Importing using destructuring
 const 
@@ -30,7 +31,7 @@ router
 
 router
     .route('/')
-    .get(getAllTours)
+    .get(authController.protect, getAllTours)
     .post(createTour);
 
 router
