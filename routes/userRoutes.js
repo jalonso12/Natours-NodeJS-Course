@@ -12,6 +12,12 @@ router
     .post('/login', authCtrlr.login);
 
 router
+    .post('/forgotPassword', authCtrlr.forgotPassword);
+  
+router
+    .patch('/resetPassword/:token', authCtrlr.resetPassword);
+
+router
     .route('/')
     .get(userCtrlr.getAllUsers)
     .post(userCtrlr.createUser);
