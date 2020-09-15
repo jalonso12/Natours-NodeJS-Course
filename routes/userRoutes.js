@@ -18,6 +18,15 @@ router
     .patch('/resetPassword/:token', authCtrlr.resetPassword);
 
 router
+    .patch('/updateMyPassword', authCtrlr.protect, authCtrlr.updatePassword);
+
+router
+    .patch('/updateMe', authCtrlr.protect, userCtrlr.updateMe);
+
+router
+    .delete('/deleteMe', authCtrlr.protect, userCtrlr.deleteMe);
+
+router
     .route('/')
     .get(userCtrlr.getAllUsers)
     .post(userCtrlr.createUser);
