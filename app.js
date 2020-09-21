@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 // ROUTE MODULES
 const AppError = require('./utils/appError.js');
@@ -10,12 +12,27 @@ const userRouter = require('./routes/userRoutes');
 
 const APP = express();
 
-// MIDDLEWARE
+// GLOBAL MIDDLEWARE
+// Set security HTTP
+APP.use(helmet());
+
+// Development login
 if(process.env.NODE_ENV === 'development'){
     APP.use(morgan('dev'));
 }
 
-APP.use(express.json());
+// Limit requests from same IP
+const limiter = rateLimit({
+    max: 100, //Amount of requests allowed
+    windowMs: 60 * 60 * 100, //Time interval per allowed requested
+    message: 'Too many requests, please try again in 1 hour'
+});
+APP.use('/api', limiter);
+
+// Body parser, reading data from body into req.body
+APP.use(express.json({ limit: '10kb' }));
+
+// Serving static files
 APP.use(express.static(`${__dirname}/public`));
 
 // Local Middleware
