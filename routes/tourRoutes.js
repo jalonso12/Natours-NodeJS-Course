@@ -30,17 +30,25 @@ router
 
 router
     .route('/monthly-plan/:year')
-    .get(getMonthlyPlan);
+    .get(
+        authCtrlr.protect, 
+        authCtrlr.restrictTo('admin', 'lead-guide', 'guide'),
+        getMonthlyPlan
+        );
 
 router
     .route('/')
-    .get(authCtrlr.protect, getAllTours)
-    .post(createTour);
+    .get(getAllTours)
+    .post(authCtrlr.protect, authCtrlr.restrictTo('admin', 'lead-guide'), createTour);
 
 router
     .route('/:id')
     .get(getSpecificTour)
-    .patch(updateTour)
+    .patch(
+        authCtrlr.protect, 
+        authCtrlr.restrictTo('admin', 'lead-guide'),
+        updateTour
+        )
     .delete(
         authCtrlr.protect, 
         authCtrlr.restrictTo('admin', 'lead-guide'), 

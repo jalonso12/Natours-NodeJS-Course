@@ -17,14 +17,21 @@ router
 router
     .patch('/resetPassword/:token', authCtrlr.resetPassword);
 
-router
-    .patch('/updateMyPassword', authCtrlr.protect, authCtrlr.updatePassword);
+router.use(authCtrlr.protect); // Protect all routes after this point
 
 router
-    .patch('/updateMe', authCtrlr.protect, userCtrlr.updateMe);
+    .patch('/updateMyPassword', authCtrlr.updatePassword);
 
 router
-    .delete('/deleteMe', authCtrlr.protect, userCtrlr.deleteMe);
+    .get('/me', userCtrlr.getMe, userCtrlr.getSpecificUser);
+
+router
+    .patch('/updateMe', userCtrlr.updateMe);
+
+router
+    .delete('/deleteMe', userCtrlr.deleteMe);
+
+router.use(authCtrlr.restrictTo('admin'));
 
 router
     .route('/')
@@ -33,7 +40,7 @@ router
 
 router 
     .route('/:id')
-    .get(userCtrlr.getUser)
+    .get(userCtrlr.getSpecificUser)
     .patch(userCtrlr.updateUser)
     .delete(userCtrlr.deleteUser);
 
