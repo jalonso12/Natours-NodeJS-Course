@@ -1,5 +1,6 @@
 const express = require('express');
-const authController = require('./../controllers/authController');
+const authCtrlr = require('../controllers/authController');
+const reviewRouter = require('../routes/reviewRoutes');
 
 // Importing using destructuring
 const 
@@ -17,6 +18,8 @@ const
 // Routers will only be runned when it matches url
 const router = express.Router();
 
+router.use('/:id/reviews', reviewRouter);
+
 router
     .route('/top-5-cheap')
     .get(aliasTopTours, getAllTours);
@@ -31,7 +34,7 @@ router
 
 router
     .route('/')
-    .get(authController.protect, getAllTours)
+    .get(authCtrlr.protect, getAllTours)
     .post(createTour);
 
 router
@@ -39,8 +42,8 @@ router
     .get(getSpecificTour)
     .patch(updateTour)
     .delete(
-        authController.protect, 
-        authController.restrictTo('admin', 'lead-guide'), 
+        authCtrlr.protect, 
+        authCtrlr.restrictTo('admin', 'lead-guide'), 
         deleteTour
         );
 

@@ -1,6 +1,6 @@
 const express = require('express');
-const userCtrlr = require('./../controllers/userController');
-const authCtrlr = require('./../controllers/authController')
+const userCtrlr = require('../controllers/userController');
+const authCtrlr = require('../controllers/authController');
 
 // Routers will only be runned when it matches url
 const router = express.Router();
