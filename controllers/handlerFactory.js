@@ -34,6 +34,29 @@ exports.getOne = (Model, popOptions) => catchAsync(async (req, res, next) => {
         });
 });
 
+exports.getAll = Model => catchAsync(async (req, res, next) => {
+    // Allow nested GET reviews on tours
+    let filter = {};
+    if(req.params.id) filter = { tour: req.params.id };
+    //
+
+    const features = new APIFeatures(Model.find(filter), req.query).filter()
+                                                            .sort()
+                                                            .limitFields()
+                                                            .paginate();
+    const docs = await features.query.explain();
+
+    res
+        .status(200)
+        .json({
+            status: 'success',
+            results: docs.length,
+            data: {
+                data: docs
+            }
+        });
+});
+
 exports.updateOne = Model => catchAsync(async (req, res, next) => {
     const id = req.params.id;
 
@@ -66,28 +89,5 @@ exports.deleteOne = Model => catchAsync(async (req, res, next) => {
         .json({
             status: 'success',
             data: null
-        });
-});
-
-exports.getAll = Model => catchAsync(async (req, res, next) => {
-    // Allow nested GET reviews on tours
-    let filter = {};
-    if(req.params.id) filter = { tour: req.params.id };
-    //
-
-    const features = new APIFeatures(Model.find(filter), req.query).filter()
-                                                            .sort()
-                                                            .limitFields()
-                                                            .paginate();
-    const docs = await features.query;
-
-    res
-        .status(200)
-        .json({
-            status: 'success',
-            results: docs.length,
-            data: {
-                data: docs
-            }
         });
 });
