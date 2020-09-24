@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const path = require('path');
 
 // ROUTE MODULES
 const AppError = require('./utils/appError.js');
@@ -16,7 +17,12 @@ const reviewRouter = require('./routes/reviewRoutes');
 
 const APP = express();
 
+APP.set('view engine', 'pug');
+APP.set('views', path.join(__dirname, 'views'));
+
 // GLOBAL MIDDLEWARE
+// Serving static files
+APP.use(express.static(path.join(__dirname, 'public')));
 // Set security HTTP
 APP.use(helmet());
 
@@ -54,9 +60,6 @@ APP.use(hpp({
     ]
 }));
 
-// Serving static files
-APP.use(express.static(`${__dirname}/public`));
-
 // Local Middleware
 // APP.use((req, res, next) => {
 //     //console.log('Middleware hobbit in action');
@@ -69,6 +72,31 @@ APP.use((req, res, next) => {
 });
 
 // MOUNT ROUTING
+APP.get('/', (req, res) => {
+    res
+        .status(200)
+        .render('base', {
+            tour: 'The Forest Hiker',
+            user: 'Jonas'
+        });
+});
+
+APP.get('/overview', (req, res) => {
+    res
+        .status(200)
+        .render('overview', {
+            title: 'All Tours'
+        });
+});
+
+APP.get('/tour', (req, res) => {
+    res
+        .status(200)
+        .render('tour', {
+            title: 'The Forest Hiker'
+        });
+});
+
 APP.use('/api/v1/tours', tourRouter);
 APP.use('/api/v1/users', userRouter);
 APP.use('/api/v1/reviews', reviewRouter);
