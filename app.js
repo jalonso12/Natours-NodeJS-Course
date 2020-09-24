@@ -12,6 +12,7 @@ const errorHandler = require('./handlers/errorGlobalHandler.js');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 
 const APP = express();
 
@@ -70,6 +71,7 @@ APP.use((req, res, next) => {
 // MOUNT ROUTING
 APP.use('/api/v1/tours', tourRouter);
 APP.use('/api/v1/users', userRouter);
+APP.use('/api/v1/reviews', reviewRouter);
 
 // Unexisting endpoint handdling
 APP.all('*', (req, res, next) => {
