@@ -12,7 +12,9 @@ const
         deleteTour,
         aliasTopTours,
         getTourStats,
-        getMonthlyPlan
+        getMonthlyPlan,
+        getToursWithin,
+        getDistances
     } = require(`./../controllers/tourController`);
 
 // Routers will only be runned when it matches url
@@ -35,6 +37,14 @@ router
         authCtrlr.restrictTo('admin', 'lead-guide', 'guide'),
         getMonthlyPlan
         );
+
+router
+    .route('/within/:distance/center/:latlng/unit/:unit')
+    .get(getToursWithin);
+
+router
+    .route('/distances/:latlng/unit/:unit')
+    .get(getDistances);
 
 router
     .route('/')
