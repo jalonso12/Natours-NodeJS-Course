@@ -8,12 +8,13 @@ const hpp = require('hpp');
 const path = require('path');
 
 // ROUTE MODULES
-const AppError = require('./utils/appError.js');
-const errorHandler = require('./handlers/errorGlobalHandler.js');
+const AppError = require('./utils/appError');
+const errorHandler = require('./handlers/errorGlobalHandler');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 const APP = express();
 
@@ -72,31 +73,7 @@ APP.use((req, res, next) => {
 });
 
 // MOUNT ROUTING
-APP.get('/', (req, res) => {
-    res
-        .status(200)
-        .render('base', {
-            tour: 'The Forest Hiker',
-            user: 'Jonas'
-        });
-});
-
-APP.get('/overview', (req, res) => {
-    res
-        .status(200)
-        .render('overview', {
-            title: 'All Tours'
-        });
-});
-
-APP.get('/tour', (req, res) => {
-    res
-        .status(200)
-        .render('tour', {
-            title: 'The Forest Hiker'
-        });
-});
-
+APP.use('/', viewRouter);
 APP.use('/api/v1/tours', tourRouter);
 APP.use('/api/v1/users', userRouter);
 APP.use('/api/v1/reviews', reviewRouter);
