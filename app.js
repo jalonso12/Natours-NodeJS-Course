@@ -24,8 +24,20 @@ APP.set('views', path.join(__dirname, 'views'));
 // GLOBAL MIDDLEWARE
 // Serving static files
 APP.use(express.static(path.join(__dirname, 'public')));
+
 // Set security HTTP
 APP.use(helmet());
+APP.use(helmet.contentSecurityPolicy({
+    directives: {
+        baseUri: ["'self'"],
+        defaultSrc: ["'self'", 'https:', 'blob:', 'data:'],
+        fontSrc: ["'self'", 'https:', 'data:'],
+        scriptSrc: ["'self'", 'https:', 'blob:'],
+        objectSrc: ["'none'"],
+        styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
+        upgradeInsecureRequests: []
+    }
+}));
 
 // Development login
 if(process.env.NODE_ENV === 'development'){
