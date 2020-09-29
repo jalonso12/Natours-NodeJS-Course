@@ -1,5 +1,5 @@
 const Tour = require('../models/tourModel');
-
+const AppError = require('../utils/appError');
 const catchAsync = require('../handlers/errorCatchHandler');
 
 exports.getLoginForm = catchAsync(async (req, res) => {
@@ -26,6 +26,10 @@ exports.getTour = catchAsync(async (req, res, next) => {
         path: 'reviews',
         fields: 'review rating user'
     });
+
+    if(!tour) {
+        return next(new AppError('Something must be wrong with the name or no tour exists', 404));
+    }
 
     res
         .status(200)
