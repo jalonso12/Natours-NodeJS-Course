@@ -6,6 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 // ROUTE MODULES
 const AppError = require('./utils/appError');
@@ -30,7 +31,7 @@ APP.use(helmet());
 APP.use(helmet.contentSecurityPolicy({
     directives: {
         baseUri: ["'self'"],
-        defaultSrc: ["'self'", 'https:', 'blob:', 'data:'],
+        defaultSrc: ["'self'", 'http:', 'https:', 'ws:', 'blob:', 'data:'],
         fontSrc: ["'self'", 'https:', 'data:'],
         scriptSrc: ["'self'", 'https:', 'blob:'],
         objectSrc: ["'none'"],
@@ -54,6 +55,7 @@ APP.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 APP.use(express.json({ limit: '10kb' }));
+APP.use(cookieParser());
 
 // Data sanitization (NoSQL Injection)
 APP.use(mongoSanitize());
@@ -72,12 +74,6 @@ APP.use(hpp({
         'price'
     ]
 }));
-
-// Local Middleware
-// APP.use((req, res, next) => {
-//     //console.log('Middleware hobbit in action');
-//     next();
-// });
 
 APP.use((req, res, next) => {
     req.requestTime = new Date().toISOString();

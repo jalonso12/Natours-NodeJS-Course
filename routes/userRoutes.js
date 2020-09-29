@@ -12,6 +12,9 @@ router
     .post('/login', authCtrlr.login);
 
 router
+    .get('/logout', authCtrlr.logout);
+
+router
     .post('/forgotPassword', authCtrlr.forgotPassword);
   
 router
