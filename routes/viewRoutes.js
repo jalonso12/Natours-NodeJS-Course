@@ -4,20 +4,26 @@ const authCtrlr = require('../controllers/authController');
 const {
         getOverview,
         getTour,
-        getLoginForm
+        getLoginForm,
+        getAccount,
+        updateUserData
     } = require('../controllers/viewController');
 
 const router = express.Router();
 
-router.use(authCtrlr.isLoggedIn);
+router
+    .get('/', authCtrlr.isLoggedIn, getOverview);
 
 router
-    .get('/', getOverview);
+    .get('/login', authCtrlr.isLoggedIn, getLoginForm);
 
 router
-    .get('/login', getLoginForm);
+    .get('/me', authCtrlr.protect, getAccount);
 
 router
-    .get('/tour/:slug', getTour);
+    .post('/submit-user-data', authCtrlr.protect, updateUserData)
+
+router
+    .get('/tour/:slug', authCtrlr.isLoggedIn, getTour);
 
 module.exports = router;
