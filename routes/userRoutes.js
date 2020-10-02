@@ -2,6 +2,8 @@ const express = require('express');
 const userCtrlr = require('../controllers/userController');
 const authCtrlr = require('../controllers/authController');
 
+
+
 // Routers will only be runned when it matches url
 const router = express.Router();
 
@@ -29,7 +31,12 @@ router
     .get('/me', userCtrlr.getMe, userCtrlr.getSpecificUser);
 
 router
-    .patch('/updateMe', userCtrlr.updateMe);
+    .patch(
+        '/updateMe', 
+        userCtrlr.uploadUserPhoto, 
+        userCtrlr.resizeUserPhoto,
+        userCtrlr.updateMe
+        );
 
 router
     .delete('/deleteMe', userCtrlr.deleteMe);
