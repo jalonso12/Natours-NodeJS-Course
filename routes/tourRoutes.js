@@ -14,7 +14,9 @@ const
         getTourStats,
         getMonthlyPlan,
         getToursWithin,
-        getDistances
+        getDistances,
+        uploadTourImages,
+        resizeTourImages
     } = require(`./../controllers/tourController`);
 
 // Routers will only be runned when it matches url
@@ -57,6 +59,8 @@ router
     .patch(
         authCtrlr.protect, 
         authCtrlr.restrictTo('admin', 'lead-guide'),
+        uploadTourImages,
+        resizeTourImages,
         updateTour
         )
     .delete(

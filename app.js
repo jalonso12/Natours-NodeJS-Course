@@ -5,20 +5,40 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 
 // ROUTE MODULES
-const AppError = require('./utils/appError.js');
-const errorHandler = require('./handlers/errorGlobalHandler.js');
+const AppError = require('./utils/appError');
+const errorHandler = require('./handlers/errorGlobalHandler');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 const APP = express();
 
+APP.set('view engine', 'pug');
+APP.set('views', path.join(__dirname, 'views'));
+
 // GLOBAL MIDDLEWARE
+// Serving static files
+APP.use(express.static(path.join(__dirname, 'public')));
+
 // Set security HTTP
 APP.use(helmet());
+APP.use(helmet.contentSecurityPolicy({
+    directives: {
+        baseUri: ["'self'"],
+        defaultSrc: ["'self'", 'http:', 'https:', 'ws:', 'blob:', 'data:'],
+        fontSrc: ["'self'", 'https:', 'data:'],
+        scriptSrc: ["'self'", 'https:', 'blob:'],
+        objectSrc: ["'none'"],
+        styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
+        upgradeInsecureRequests: []
+    }
+}));
 
 // Development login
 if(process.env.NODE_ENV === 'development'){
@@ -35,6 +55,8 @@ APP.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 APP.use(express.json({ limit: '10kb' }));
+APP.use(express.urlencoded({ extended: true, limit: '10kb' }));
+APP.use(cookieParser());
 
 // Data sanitization (NoSQL Injection)
 APP.use(mongoSanitize());
@@ -54,21 +76,13 @@ APP.use(hpp({
     ]
 }));
 
-// Serving static files
-APP.use(express.static(`${__dirname}/public`));
-
-// Local Middleware
-// APP.use((req, res, next) => {
-//     //console.log('Middleware hobbit in action');
-//     next();
-// });
-
 APP.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
     next();
 });
 
 // MOUNT ROUTING
+APP.use('/', viewRouter);
 APP.use('/api/v1/tours', tourRouter);
 APP.use('/api/v1/users', userRouter);
 APP.use('/api/v1/reviews', reviewRouter);
