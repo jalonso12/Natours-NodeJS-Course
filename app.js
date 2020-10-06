@@ -16,6 +16,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 
 const APP = express();
 
@@ -86,6 +87,7 @@ APP.use('/', viewRouter);
 APP.use('/api/v1/tours', tourRouter);
 APP.use('/api/v1/users', userRouter);
 APP.use('/api/v1/reviews', reviewRouter);
+APP.use('/api/v1/bookings', bookingRouter);
 
 // Unexisting endpoint handdling
 APP.all('*', (req, res, next) => {
