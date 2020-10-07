@@ -7,6 +7,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 // ROUTE MODULES
 const AppError = require('./utils/appError');
@@ -76,6 +77,8 @@ APP.use(hpp({
         'price'
     ]
 }));
+
+APP.use(compression());
 
 APP.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
