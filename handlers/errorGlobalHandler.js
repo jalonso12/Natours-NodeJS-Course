@@ -19,8 +19,6 @@ const handleDBValidationError = err => {
 
     const message = `Invalid input data. ${errors.join('. ')}`;
 
-    console.log(message)
-
     return new AppError(message, 400)
 }
 
