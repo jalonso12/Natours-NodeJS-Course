@@ -32,6 +32,6 @@ const APP = require('./app');
 
 // SERVER STARTER
 const port = process.env.PORT || 8000;
-const server = APP.listen(port, 'localhost', () => {
+const server = APP.listen(port, () => {
     console.log(`<--- App running on ${process.env.NODE_ENV} (Port: ${port}) --->`);
 });
