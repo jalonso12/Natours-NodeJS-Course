@@ -35,3 +35,10 @@ const port = process.env.PORT || 8000;
 const server = APP.listen(port, () => {
     console.log(`<--- App running on ${process.env.NODE_ENV} (Port: ${port}) --->`);
 });
+
+process.on('SIGTERM', () => {
+    console.log('SIGTERM RECEIVED. Shutting down peacefully...');
+    server.close(() => {
+        console.log('Process terminated!');
+    });
+});

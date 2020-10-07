@@ -8,6 +8,7 @@ const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 // ROUTE MODULES
 const AppError = require('./utils/appError');
@@ -21,10 +22,20 @@ const bookingRouter = require('./routes/bookingRoutes');
 
 const APP = express();
 
+APP.enable('trust proxy');
+
 APP.set('view engine', 'pug');
 APP.set('views', path.join(__dirname, 'views'));
 
 // GLOBAL MIDDLEWARE
+APP.use(cors());
+
+// APP.use(cors({
+//     origin: '[site allow to access external API]'
+// }));
+
+APP.options('*', cors());
+
 // Serving static files
 APP.use(express.static(path.join(__dirname, 'public')));
 
