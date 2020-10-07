@@ -4,6 +4,7 @@
   "description": "Learning Node, Express & MongoDB",
   "main": "app.js",
   "scripts": {
+    "start": "node server.js",
     "start:dev": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&nodemon server.js",
     "debug": "ndb server.js",
@@ -48,5 +49,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.0",
     "prettier": "^2.0.5"
+  },
+  "engines": {
+    "node": "<=14.6.0"
   }
 }
