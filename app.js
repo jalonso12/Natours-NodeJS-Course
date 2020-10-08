@@ -13,6 +13,7 @@ const cors = require('cors');
 // ROUTE MODULES
 const AppError = require('./utils/appError');
 const errorHandler = require('./handlers/errorGlobalHandler');
+const bookingCtrlr = require('./controllers/bookingController');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -65,6 +66,8 @@ const limiter = rateLimit({
     message: 'Too many requests, please try again in 1 hour'
 });
 APP.use('/api', limiter);
+
+APP.post('/webhook-checkout', express.raw({ type: 'application/json' }), bookingCtrlr.webhookCheckout);
 
 // Body parser, reading data from body into req.body
 APP.use(express.json({ limit: '10kb' }));
