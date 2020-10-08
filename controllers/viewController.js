@@ -4,6 +4,14 @@ const Booking = require('../models/bookingModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../handlers/errorCatchHandler');
 
+exports.alerts = (req, res, next) => {
+    const { alert } = req.query;
+    if(alert === 'booking') 
+        res.locals.alert = 'You have successfully booked a tour! Check your email for more info! If your booking doesn\'t show up, give it 2 min and refresh the page';
+    
+    next();
+};
+
 exports.getLoginForm = catchAsync(async (req, res) => {
     res
         .status(200)

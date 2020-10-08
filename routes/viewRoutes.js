@@ -1,6 +1,7 @@
 const express = require('express');
 const authCtrlr = require('../controllers/authController');
-const bookingCtrlr = require('../controllers/bookingController');
+const viewCtrlr = require('../controllers/viewController');
+//const bookingCtrlr = require('../controllers/bookingController');
 
 const {
         getOverview,
@@ -13,8 +14,10 @@ const {
 
 const router = express.Router();
 
+router.use(viewCtrlr.alerts);
+
 router
-    .get('/', bookingCtrlr.createBookingCheckout, authCtrlr.isLoggedIn, getOverview);
+    .get('/',  authCtrlr.isLoggedIn, getOverview);
 
 router
     .get('/login', authCtrlr.isLoggedIn, getLoginForm);
